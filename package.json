@@ -1,0 +1,53 @@
+{
+  "name": "responsive-weather-widget",
+  "version": "1.0.0",
+  "description": "A simple responsive weather widget",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve",
+    "build": "rimraf dist/ && webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcesc0/responsive-weather-widget.git"
+  },
+  "author": "Francesco De Filippis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrcesc0/responsive-weather-widget/issues"
+  },
+  "homepage": "https://github.com/mrcesc0/responsive-weather-widget#readme",
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "html-webpack-plugin": "^4.5.0",
+    "jquery": "^3.5.1",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "*.{js}": [
+      "eslint --fix"
+    ]
+  }
+}
