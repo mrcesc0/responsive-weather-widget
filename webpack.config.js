@@ -2,13 +2,22 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'none',
+  mode: 'development',
   entry: './src/index.js',
+  devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
     filename: 'bundle.js',
   },
+  context: path.resolve(__dirname),
   plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+  resolve: {
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      buffer: require.resolve('buffer/'),
+      stream: require.resolve('stream-browserify'),
+    },
+  },
   module: {
     rules: [
       {
@@ -35,8 +44,8 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 3000,
+    hot: true,
   },
 };
