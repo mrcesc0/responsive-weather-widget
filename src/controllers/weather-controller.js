@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 import DataItem from '../models/DataItem';
 import CarouselItem from '../components/carousel-item';
+import Dot from '../components/carousel-dot';
 
 export default class WeatherController {
   constructor(httpClient, options) {
@@ -24,7 +25,7 @@ export default class WeatherController {
 
   _onRequestDataSuccess(...args) {
     console.log('[DONE], [requestData]', ...args);
-    this.data = args.map(a => new DataItem(a[0]));
+    this.data = args.map((a, i) => new DataItem(a[0], i));
     return this.data;
   }
 
@@ -51,9 +52,13 @@ export default class WeatherController {
    */
   draw() {
     if (!this.data) {
-      throw new Error('[ERROR] data not available');
+      throw new Error('[ERROR] data not available!');
     }
 
-    $('#carousel').html(this.data.map(CarouselItem).join(''));
+    const dots = this.data.map((d, i) => Dot(i)).join('');
+    const items = this.data.map(CarouselItem).join('');
+
+    $('#dots').html(dots);
+    $('#carousel').html(items);
   }
 }

@@ -24,7 +24,7 @@ export default class HttpClient {
 
     const method = 'GET';
     const concat = '&';
-    const query = { location, format: 'json' };
+    const query = { location, format: 'json', u: 'c' };
     const oauth = {
       oauth_consumer_key: consumer_key,
       oauth_nonce: Math.random().toString(36).substring(2),
