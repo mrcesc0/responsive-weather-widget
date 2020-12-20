@@ -1,5 +1,8 @@
 import $ from 'jquery';
 
+import DataItem from '../models/DataItem';
+import CarouselItem from '../components/carousel-item';
+
 export default class WeatherController {
   constructor(httpClient, options) {
     if (!httpClient) {
@@ -19,25 +22,38 @@ export default class WeatherController {
     return this._options.locations;
   }
 
+  _onRequestDataSuccess(...args) {
+    console.log('[DONE], [requestData]', ...args);
+    this.data = args.map(a => new DataItem(a[0]));
+    return this.data;
+  }
+
+  _onRequestDataError(error) {
+    console.error('[ERROR]', '[requestData]', error);
+    return error;
+  }
+
+  /**
+   * Request data to Yahoo service
+   */
   requestData() {
     const requests = this._getLocations().map(location =>
       this._httpClient.requestForecastFor(location),
     );
 
-    return $.when.apply(undefined, requests).then(
-      function (...args) {
-        console.log('[DONE], [requestData]', ...args);
-        this.data = args.map(a => a[0]);
-        return this.data;
-      }.bind(this),
-      error => {
-        console.error('[ERROR]', '[requestData]', error);
-        return error;
-      },
-    );
+    return $.when
+      .apply(undefined, requests)
+      .then(this._onRequestDataSuccess.bind(this), this._onRequestDataError);
   }
 
+  /**
+   * Draw the html
+   */
   draw() {
-    console.log('I CAN DRAW NOW');
+    if (!this.data) {
+      throw new Error('[ERROR] data not available');
+    }
+
+    $('#carousel').html(this.data.map(CarouselItem).join(''));
   }
 }
