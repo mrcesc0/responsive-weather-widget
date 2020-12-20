@@ -17,8 +17,8 @@ export default class WeatherController {
     this._httpClient = httpClient;
     this._options = options;
     this._data = null;
-    this._touchstartX = 0;
-    this._touchendX = 0;
+    // this._touchstartX = 0;
+    // this._touchendX = 0;
   }
 
   _getLocations() {
@@ -36,24 +36,24 @@ export default class WeatherController {
     return error;
   }
 
-  _onTouchStart(event) {
-    this._touchstartX = event.changedTouches[0].screenX;
-  }
+  // _onTouchStart(event) {
+  //   this._touchstartX = event.changedTouches[0].screenX;
+  // }
 
-  _onTouchEnd(event) {
-    this._touchendX = event.changedTouches[0].screenX;
-    this._handleGesture();
-  }
+  // _onTouchEnd(event) {
+  //   this._touchendX = event.changedTouches[0].screenX;
+  //   this._handleGesture();
+  // }
 
-  _handleGesture() {
-    if (this._touchendX < this._touchstartX) {
-      console.log('Swiped left');
-    }
+  // _handleGesture() {
+  //   if (this._touchendX < this._touchstartX) {
+  //     console.log('Swiped left');
+  //   }
 
-    if (this._touchendX > this._touchstartX) {
-      console.log('Swiped right');
-    }
-  }
+  //   if (this._touchendX > this._touchstartX) {
+  //     console.log('Swiped right');
+  //   }
+  // }
 
   /**
    * Request data to Yahoo service
@@ -86,15 +86,15 @@ export default class WeatherController {
   /**
    * Attach event listeners
    */
-  attachEventListeners() {
-    const carousel = document.getElementById('carousel');
+  // attachEventListeners() {
+  //   const carousel = document.getElementById('carousel');
 
-    carousel.addEventListener(
-      'touchstart',
-      this._onTouchStart.bind(this),
-      false,
-    );
+  //   carousel.addEventListener(
+  //     'touchstart',
+  //     this._onTouchStart.bind(this),
+  //     false,
+  //   );
 
-    carousel.addEventListener('touchend', this._onTouchEnd.bind(this), false);
-  }
+  //   carousel.addEventListener('touchend', this._onTouchEnd.bind(this), false);
+  // }
 }
