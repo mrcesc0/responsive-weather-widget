@@ -6,9 +6,9 @@
   justify-content: center;
 
   .dot {
-    height: 1em;
-    width: 1em;
-    background-color: black;
+    height: $dot-size;
+    width: $dot-size;
+    background-color: $dot-color;
     border-radius: 50%;
     display: inline-block;
     margin-right: 5px;

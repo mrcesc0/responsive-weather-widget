@@ -51,6 +51,14 @@
       .next-day-item {
         text-align: center;
         font-size: 0.9em;
+
+        @include lg {
+          font-size: 1.3em;
+        }
+
+        @include xl {
+          font-size: 1.6em;
+        }
       }
     }
   }

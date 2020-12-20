@@ -36,5 +36,6 @@ const weatherController = new WeatherController(httpClient, {
 $(() => {
   weatherController.requestData().done(() => {
     weatherController.draw();
+    weatherController.attachEventListeners();
   });
 });

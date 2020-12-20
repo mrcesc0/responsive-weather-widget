@@ -1,5 +1,3 @@
-@import './variables';
-
 // Small devices
 @mixin sm {
   @media (min-width: #{$screen-sm-min}) {
