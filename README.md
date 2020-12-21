@@ -27,20 +27,20 @@ Example:
 ## Development
 
     npm start
-Project will be running at http://localhost:3000/
+Project will be running at http://localhost:3000/<br/>
 (**ESlint** and **Prettier** extensions for vscode are recommended)
 
 ## Debugging with Visual Studio Code
-Just press **F5** to get the Chrome debugger attached to vscode editor.
+Just press **F5** to get the Chrome debugger attached to vscode editor.<br/>
 (Be sure to have the **Debugger for Chrome** extension on vscode)
 
 ## Build & Serve
 
     npm run build && npm run serve
-The build will be running at http://localhost:5000/
+The build will be running at http://localhost:5000/<br/>
 
 ## Developed & Tested with:
-OS: **macOS Catalina Version 10.15.6**
-Browser: **Google Chrome Version 87.0.4280.88 (Build ufficiale) (x86_64)**
-NodeJS: **v12.16.0**
+OS: **macOS Catalina Version 10.15.6**<br/>
+Browser: **Google Chrome Version 87.0.4280.88 (Build ufficiale) (x86_64)**<br/>
+NodeJS: **v12.16.0**<br/>
 NPM: **6.14.9**
