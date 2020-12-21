@@ -57,27 +57,32 @@ export default class WeatherController {
     $dots.removeClass('active');
   }
 
-  _onScroll() {
+  _getCurrentElementInViewport() {
     const carousel = document.getElementById(this._options.carouselId);
+    const items = Array.prototype.slice.call(carousel.children);
+    return items.find(
+      function (i) {
+        return this._elementInViewport(i, carousel);
+      }.bind(this),
+    );
+  }
+
+  _onScroll() {
     // Clear our timeout throughout the scroll
     window.clearTimeout(this._isScrolling);
     // Set a timeout to run after scrolling ends
     this._isScrolling = setTimeout(
-      function () {
-        const items = Array.prototype.slice.call(carousel.children);
-        const current = items.find(
-          function (i) {
-            return this._elementInViewport(i, carousel);
-          }.bind(this),
-        );
-
-        if (current) {
-          this._deEmphasizeDots();
-          this._highlightDot(current.dataset.id);
-        }
-      }.bind(this),
+      this._setCurrentActiveElement.bind(this),
       50,
     );
+  }
+
+  _setCurrentActiveElement() {
+    const current = this._getCurrentElementInViewport();
+    if (current) {
+      this._deEmphasizeDots();
+      this._highlightDot(current.dataset.id);
+    }
   }
 
   /**
@@ -106,6 +111,8 @@ export default class WeatherController {
 
     $(`#${this._options.dotsId}`).html(dots);
     $(`#${this._options.carouselId}`).html(items);
+
+    this._setCurrentActiveElement();
   }
 
   /**

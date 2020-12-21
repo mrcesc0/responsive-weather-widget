@@ -20,6 +20,8 @@ const httpClient = new HttpClient({
  * New Weather Controller instance
  */
 const weatherController = new WeatherController(httpClient, {
+  dotsId: 'dots',
+  carouselId: 'carousel',
   locations: [
     {
       name: 'london,uk',
@@ -47,8 +49,6 @@ const weatherController = new WeatherController(httpClient, {
         'https://www.safaritravelplus.com/images/wp-content/uploads/2018/08/2015_06_10_nairobi_6.jpg',
     },
   ],
-  dotsId: 'dots',
-  carouselId: 'carousel',
 });
 
 /**
@@ -56,8 +56,14 @@ const weatherController = new WeatherController(httpClient, {
  * @see{@link https://api.jquery.com/ready/}
  */
 $(() => {
-  weatherController.requestData().done(() => {
-    weatherController.draw();
-    weatherController.attachEventListeners();
-  });
+  weatherController
+    .requestData()
+    .done(() => {
+      weatherController.draw();
+      weatherController.attachEventListeners();
+    })
+    .always(() => {
+      // Hide loading animation
+      $('.lds-ripple').hide();
+    });
 });
