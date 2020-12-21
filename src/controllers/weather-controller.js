@@ -17,8 +17,7 @@ export default class WeatherController {
     this._httpClient = httpClient;
     this._options = options;
     this._data = null;
-    // this._touchstartX = 0;
-    // this._touchendX = 0;
+    this._isScrolling = null;
   }
 
   _getLocations() {
@@ -27,7 +26,12 @@ export default class WeatherController {
 
   _onRequestDataSuccess(...args) {
     console.log('[DONE], [requestData]', ...args);
-    this._data = args.map((a, i) => new DataItem(a[0], i));
+    const locations = this._getLocations();
+    this._data = args.map((a, index) => {
+      const res = a[0];
+      const image = locations[index].image;
+      return new DataItem(res, index, image);
+    });
     return this._data;
   }
 
@@ -36,31 +40,52 @@ export default class WeatherController {
     return error;
   }
 
-  // _onTouchStart(event) {
-  //   this._touchstartX = event.changedTouches[0].screenX;
-  // }
+  _elementInViewport(el, carousel) {
+    const elementOffsetLeft = el.offsetLeft;
+    const carouselScrollPosition = carousel.scrollLeft;
 
-  // _onTouchEnd(event) {
-  //   this._touchendX = event.changedTouches[0].screenX;
-  //   this._handleGesture();
-  // }
+    return elementOffsetLeft === carouselScrollPosition;
+  }
 
-  // _handleGesture() {
-  //   if (this._touchendX < this._touchstartX) {
-  //     console.log('Swiped left');
-  //   }
+  _highlightDot(id) {
+    const $dot = $(`#${this._options.dotsId}`).find(`[data-id='${id}']`);
+    $dot.addClass('active');
+  }
 
-  //   if (this._touchendX > this._touchstartX) {
-  //     console.log('Swiped right');
-  //   }
-  // }
+  _deEmphasizeDots() {
+    const $dots = $(`#${this._options.dotsId} .dot`);
+    $dots.removeClass('active');
+  }
+
+  _onScroll() {
+    const carousel = document.getElementById(this._options.carouselId);
+    // Clear our timeout throughout the scroll
+    window.clearTimeout(this._isScrolling);
+    // Set a timeout to run after scrolling ends
+    this._isScrolling = setTimeout(
+      function () {
+        const items = Array.prototype.slice.call(carousel.children);
+        const current = items.find(
+          function (i) {
+            return this._elementInViewport(i, carousel);
+          }.bind(this),
+        );
+
+        if (current) {
+          this._deEmphasizeDots();
+          this._highlightDot(current.dataset.id);
+        }
+      }.bind(this),
+      50,
+    );
+  }
 
   /**
    * Request data to Yahoo service
    */
   requestData() {
     const requests = this._getLocations().map(location =>
-      this._httpClient.requestForecastFor(location),
+      this._httpClient.requestForecastFor(location.name),
     );
 
     return $.when
@@ -76,25 +101,18 @@ export default class WeatherController {
       throw new Error('[ERROR] data not available!');
     }
 
-    const dots = this._data.map((d, i) => Dot(i)).join('');
+    const dots = this._data.map(Dot).join('');
     const items = this._data.map(CarouselItem).join('');
 
-    $('#dots').html(dots);
-    $('#carousel').html(items);
+    $(`#${this._options.dotsId}`).html(dots);
+    $(`#${this._options.carouselId}`).html(items);
   }
 
   /**
    * Attach event listeners
    */
-  // attachEventListeners() {
-  //   const carousel = document.getElementById('carousel');
-
-  //   carousel.addEventListener(
-  //     'touchstart',
-  //     this._onTouchStart.bind(this),
-  //     false,
-  //   );
-
-  //   carousel.addEventListener('touchend', this._onTouchEnd.bind(this), false);
-  // }
+  attachEventListeners() {
+    const carousel = document.getElementById(this._options.carouselId);
+    carousel.addEventListener('scroll', this._onScroll.bind(this), false);
+  }
 }

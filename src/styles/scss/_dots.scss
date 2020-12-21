@@ -1,6 +1,9 @@
 #dots {
   width: 100%;
   height: $dots-container-height;
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,10 +11,14 @@
   .dot {
     height: $dot-size;
     width: $dot-size;
-    background-color: $dot-color;
     border-radius: 50%;
     display: inline-block;
     margin-right: 5px;
+    border: 1px solid $dot-color;
+
+    &.active {
+      background-color: $dot-color;
+    }
 
     &:last-child {
       margin-right: 0;

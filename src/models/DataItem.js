@@ -1,8 +1,9 @@
 export default class DataItem {
-  constructor(data, index) {
+  constructor(data, index, image) {
     const { location, current_observation, forecasts } = data;
 
     this.index = index;
+    this.image = image;
     this.city = location.city;
     this.temperature = current_observation.condition.temperature;
     this.condition = current_observation.condition.text;
