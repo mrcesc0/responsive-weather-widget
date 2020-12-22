@@ -40,11 +40,12 @@ export default class WeatherController {
     return error;
   }
 
-  _elementInViewport(el, carousel) {
-    const elementOffsetLeft = el.offsetLeft;
-    const carouselScrollPosition = carousel.scrollLeft;
+  _elementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    const elementOffsetLeft = rect.left;
+    const pageXOffset = window.pageXOffset;
 
-    return elementOffsetLeft === carouselScrollPosition;
+    return elementOffsetLeft === pageXOffset;
   }
 
   _highlightDot(id) {
@@ -62,7 +63,7 @@ export default class WeatherController {
     const items = Array.prototype.slice.call(carousel.children);
     return items.find(
       function (i) {
-        return this._elementInViewport(i, carousel);
+        return this._elementInViewport(i);
       }.bind(this),
     );
   }
@@ -121,5 +122,6 @@ export default class WeatherController {
   attachEventListeners() {
     const carousel = document.getElementById(this._options.carouselId);
     carousel.addEventListener('scroll', this._onScroll.bind(this), false);
+    carousel.addEventListener('touchmove', this._onScroll.bind(this), false); // Mobile
   }
 }
